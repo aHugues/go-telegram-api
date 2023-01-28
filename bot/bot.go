@@ -25,7 +25,7 @@ type userResponse struct {
 
 type Bot interface {
 	GetMe(ctx context.Context) (structs.User, error)
-	SendMessage(ctx context.Context, chatID int, content []byte) error
+	SendMessage(ctx context.Context, chatID int64, content string) error
 }
 
 type ConcreteBot struct {
