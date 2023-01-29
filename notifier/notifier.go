@@ -39,7 +39,7 @@ func Example() {
 }
 
 type EventNotifier interface {
-	Run()
+	Run(context.Context)
 	Subscribe(eventType []structs.UpdateType) (uuid.UUID, <-chan structs.Update)
 	Unsubscribe(uuid.UUID) error
 	ErrChan() <-chan error
