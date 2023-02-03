@@ -7,11 +7,14 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 )
 
 const BaseTelegramAPIURL = "https://api.telegram.org"
 
 const HTTPMaxRead int64 = 100_000
+
+const HTTPTimeout = 5 * time.Second
 
 func ParseJSONBody(response *http.Response, dest interface{}) error {
 	buf := bytes.NewBuffer([]byte{})

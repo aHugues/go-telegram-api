@@ -132,13 +132,11 @@ func (n *ConcreteUpdateNotifer) getUpdates() (updates []structs.Update, err erro
 
 func (n *ConcreteUpdateNotifer) handleUpdate(update structs.Update) {
 	// TODO: maybe migrate this to a second indexed map updateType[uuid] to make search quicker
-	// fmt.Printf("Handling update %+v\n", update)
 	for _, sub := range n.subscribers {
 		if sub.subscribed(update.Type()) {
 			sub.pubChan <- update
 		}
 	}
-	fmt.Printf("Updating offset from %d to %d\n", n.lastOffset, update.ID)
 	n.lastOffset = update.ID
 }
 

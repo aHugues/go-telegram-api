@@ -24,24 +24,29 @@ type userResponse struct {
 }
 
 type Bot interface {
+	// GetMe returns all the information concerning the current bot
 	GetMe(ctx context.Context) (structs.User, error)
+
+	// SendMessage sends the given message to the given chatID
 	SendMessage(ctx context.Context, chatID int64, content string) error
 }
 
 type ConcreteBot struct {
 	token   string
 	httpClt *http.Client
+	baseURL string
 }
 
 func New(token string) *ConcreteBot {
 	return &ConcreteBot{
 		token:   token,
 		httpClt: http.DefaultClient,
+		baseURL: baseclt.BaseTelegramAPIURL,
 	}
 }
 
 func (c *ConcreteBot) GetMe(ctx context.Context) (usr structs.User, err error) {
-	url := fmt.Sprintf("%s/bot%s/getMe", baseclt.BaseTelegramAPIURL, c.token)
+	url := fmt.Sprintf("%s/bot%s/getMe", c.baseURL, c.token)
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
