@@ -14,8 +14,9 @@ import (
 )
 
 type sentMessage struct {
-	ChatID int64  `json:"chat_id"`
-	Text   string `json:"text"`
+	ChatID     int64  `json:"chat_id"`
+	Text       string `json:"text"`
+	Formatting string `json:"parse_mode,omitempty"`
 }
 
 type userResponse struct {
@@ -28,7 +29,7 @@ type Bot interface {
 	GetMe(ctx context.Context) (structs.User, error)
 
 	// SendMessage sends the given message to the given chatID
-	SendMessage(ctx context.Context, chatID int64, content string) error
+	SendMessage(ctx context.Context, chatID int64, content string, formattingMode structs.FormattingOption) error
 }
 
 type ConcreteBot struct {
@@ -67,11 +68,12 @@ func (c *ConcreteBot) GetMe(ctx context.Context) (usr structs.User, err error) {
 	return rawResponse.User, nil
 }
 
-func (c *ConcreteBot) SendMessage(ctx context.Context, chatID int64, content string) error {
+func (c *ConcreteBot) SendMessage(ctx context.Context, chatID int64, content string, formattingMode structs.FormattingOption) error {
 	url := fmt.Sprintf("%s/bot%s/sendMessage", baseclt.BaseTelegramAPIURL, c.token)
 	payload := sentMessage{
-		ChatID: chatID,
-		Text:   content,
+		ChatID:     chatID,
+		Text:       content,
+		Formatting: formattingMode.String(),
 	}
 
 	bytesPayload, err := json.Marshal(payload)

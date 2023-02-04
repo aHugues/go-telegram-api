@@ -99,3 +99,27 @@ type Updates struct {
 	OK     bool     `json:"ok"`
 	Result []Update `json:"result"`
 }
+
+type FormattingOption int
+
+const (
+	FormattingMarkdownV2 = iota
+	FormattingHTML
+	FormattingLegacy
+	FormattingNone
+)
+
+func (o FormattingOption) String() string {
+	switch o {
+	case FormattingMarkdownV2:
+		return "MarkdownV2"
+	case FormattingHTML:
+		return "HTML"
+	case FormattingLegacy:
+		return "Markdown"
+	case FormattingNone:
+		return ""
+	default:
+		return ""
+	}
+}
